@@ -20,7 +20,7 @@ class Tetrahedron:
         self.length = length
         self.theta = theta
 
-    def draw():
+    def draw(self):
         # Create mesh 
         me = bpy.data.meshes.new('mesh') 
         # Create object
@@ -82,18 +82,17 @@ def quad(tetra):
 
 def iterate(tetra, tetra_list, count):
     if count == 0:
-        return tetra_list.append( \
+        tetra_list.append( \
             Tetrahedron(tetra.x, tetra.y, tetra.z, tetra.length, tetra.theta))
     else:
         tetra_list.extend(quad(tetra))
-        [tetra_list.append(n) for n in iterate(get_tetra(tetra, tetra.length/2, 0), tetra_list, count - 1)]
-        [tetra_list.append(n) for n in iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.b), tetra_list, count - 1)]
-        [tetra_list.append(n) for n in iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.c), tetra_list, count - 1)]
-        return tetra_list
+        iterate(get_tetra(tetra, tetra.length/2, 0), tetra_list, count - 1)
+        iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.b), tetra_list, count - 1)
+        iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.c), tetra_list, count - 1)
 
 t = Tetrahedron(0,0,0,100,0)
-l = []
-tetra_list = iterate(t, l, 1)
+tetra_list = []
+iterate(t, tetra_list, 1)
 
-for tetra in tet_list:
+for tetra in tetra_list:
     tetra.draw()
