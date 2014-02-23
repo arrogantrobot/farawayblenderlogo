@@ -32,22 +32,20 @@ class Tetrahedron:
         # Get a BMesh representation
         bm = bmesh.new() # create an empty BMesh
         bm.from_mesh(me) # fill it in from a Mesh
-        x = self.x
-        y = self.y
-        z = self.z
+        point = (self.x, self.y, self.z)
         length = self.length
         theta = self.theta
 
-        vert_d = bm.verts.new( (x, y, z) )
+        vert_d = bm.verts.new( point )
 
         vert_a = bm.verts.new( \
-            self.get_vert((x, y, z), length, theta, self.a) )
+            self.get_vert( point, length, theta, self.a) )
 
         vert_b = bm.verts.new( \
-            self.get_vert((x, y, z), length, theta, self.b) )
+            self.get_vert( point, length, theta, self.b) )
 
         vert_c = bm.verts.new( \
-            self.get_vert((x, y, z), length, theta, self.c) )
+            self.get_vert( point, length, theta, self.c) )
 
         bm.verts.index_update()
 
@@ -90,7 +88,7 @@ def iterate(tetra, tetra_list, count):
         iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.b), tetra_list, count - 1)
         iterate(get_tetra(tetra, tetra.length/2, Tetrahedron.c), tetra_list, count - 1)
 
-t = Tetrahedron(0,0,0,100,0)
+t = Tetrahedron(0, 0, Tetrahedron.sqrt3 * Tetrahedron.height * 100, 100, 0)
 tetra_list = []
 iterate(t, tetra_list, 1)
 
